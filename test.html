@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>cartonFactory - test </title>
+    <script src="cartonFactory.js"></script>
+    <style></style>
+</head>
+<body>
+  <div id="carton_slim"> type only [ slim ] </div>
+  <div id="carton_yellow">Yellow ( styles only ) </div>
+  <div id="carton_green">Pink ( query - styles ) </div>
+  <div id="carton_pink">Pink ( styles, type [ slim ] ) </div>
+  <div id="carton_lightblue">Lightblue ( styles, query - types [ slim, stretch ] )</div>
+  <button>Test</button>
+</body>
+<script>
+  
+  var F = cartonFactory( '#' );
+  var S = document.getElementsByTagName( 'style' )[ 0 ];
+  var baseStyles = { styles: { padding: '20px', color: 'grey', background: 'lightgrey' } };
+  
+  function updateStyle () {  S.innerText = F.parse(); }
+  
+  function check ( list, key, value, attr ) { 
+    var i = 0; l = list.length;
+    var collect = [];
+    for ( i; i<l; i++) {
+      var specialKey = list[ i ][ key ]
+      if ( value === true && attr ) { collect.push( !! specialKey && !! specialKey[ attr ] ) }
+      else if ( value === false  && attr ) { collect.push( ! specialKey ? true : ! specialKey[ attr ]  ) }
+      else if ( attr ) collect.push( ( value.indexOf( specialKey[ attr ] ) > -1  ) )
+      else if ( value === true ) collect.push( !! specialKey )
+      else if ( value === false ) collect.push( ! specialKey )
+      else if ( value instanceof HTMLElement )  collect.push( value === specialKey  )
+      
+      else collect.push( ( value.indexOf( specialKey ) > -1 )  );
+      
+    }
+    return collect;
+  }
+  
+  function testGet () {
+   var current;
+   
+   console.log( '--- get type ---')
+   
+   current =  F.get( { type: false } )
+   console.log( 'has no type: ', current, check( current, 'type', false ) )
+   
+   current = F.get( { type: true } )
+   console.log( 'has type: ', current, check( current, 'type', true ) )
+   
+   current = F.get( { type: 'stretch' } )
+   console.log( 'type is stretch: ', current, check( current, 'type', 'stretch' ) ) 
+   
+   current =  F.get( { type: [ 'stretch','slim' ] } )
+   console.log( 'type is stretch, slim: ', current, 'stretch:', check( current, 'type', 'stretch' ), 'slim:', check( current, 'type', 'slim' ) ) 
+   
+   console.log( '--- get dom ---' )
+   
+   current = F.get( { dom: document.getElementById( 'carton_lightblue' ) } )
+   console.log( 'carton from a special dom', current, check( current, 'dom', document.getElementById( 'carton_lightblue' ) ) )
+   
+   console.log( '--- get style  ---' )
+   
+   current = F.get( { styles: { border: false } } )
+   console.log( 'has no attribute border: ', current, check( current, 'styles', false, 'border' ) )
+   
+   current = F.get( { styles: { border: true } } )
+   console.log( 'has attribute border: ', current, check( current, 'styles', true, 'border' ) )
+   
+   current = F.get( { styles: { border: false, color: 'red' } } )
+   console.log( 'has no attribute border and color is red: ', current, check( current, 'styles', false, 'border' ) )
+   
+   current = F.get( { styles: { background: true, color: 'grey' } } )
+   console.log( 'has no attribute border and color is red: ', current, check( current, 'styles', false, 'border' ) )
+   
+   
+   current = F.get( { styles: { color: 'orange' } } )
+   console.log( 'has color that is orange:', current, check( current, 'styles', 'orange', 'color' ) )
+   
+   
+   current = F.get( { styles: { color: 'orange', background: 'yellow' } } )
+   console.log( 'has color that is orange and background that is yellow:', current, 'color orange:', check( current, 'styles', 'orange', 'color' ), 'background yellow:', check( current, 'styles', 'orange', 'color' ))
+   
+   
+   current = F.get( { styles: { color: [ 'orange', 'red' ] } } )
+   console.log( 'has color that is orange or red:', current, 'color orange:', check( current, 'styles', 'orange', 'color' ), 'color red:', check( current, 'styles', 'orange', 'red' ) )
+   
+   current = F.get( { styles: { color: [ 'orange', 'red' ], background: 'yellow' } } )
+   console.log( 'has color that is orange or red and background that is yellow:', current, 'color orange:', check( current, 'styles', 'orange', 'color' ), 'color red:', check( current, 'styles', 'orange', 'red' ), 'background yellow:', check( current, 'styles', 'background', 'yellow'   ) )
+  }
+  
+  
+  /*
+  var typeOnly = F.add(
+    document.getElementById( 'carton_slim' )
+  , { type: 'slim' }
+  )
+  */
+  var yellow = F.add(
+    document.getElementById( 'carton_yellow' )
+  , baseStyles
+  , { styles: { background: 'yellow', color: 'orange' } }
+  )
+  
+  var green = F.add(
+    document.getElementById( 'carton_green' )
+  , baseStyles
+  , { styles: { background: 'lightgreen', color: 'green' }, query: { 'max-width' : '320px' } }
+  )
+  
+  
+  var pink = F.add( 
+    document.getElementById( 'carton_pink' )
+  , { styles: { background: 'pink', color: 'red' } }
+  , { type: 'slim' }
+  , baseStyles
+  )
+  
+  var lightBlue = F.add( 
+   document.getElementById( 'carton_lightblue' )
+ , { styles: { background: 'lightblue', color: 'blue' } }
+ , { type: 'slim', query: { 'min-width' : '320px' } }
+ , { type: 'stretch', query: { 'max-width' : '320px' } }
+ , baseStyles
+ )
+ 
+ var btn = F.add( 
+   document.getElementsByTagName( 'button' )[ 0 ]
+ , { styles: { border: '4px solid grey'} }
+ , { type: 'stretch' }
+ , baseStyles
+ )
+ 
+ document.getElementsByTagName( 'button' )[ 0 ].onclick = testGet  
+ updateStyle();
+ 
+
+ 
+ 
+ 
+ 
+  /*
+  var test = new Factory( 
+      $test[ 0 ]
+    , { styles: { border: '5px solid grey' }  }
+    , { type: 'slim', styles: { background: 'pink', color: 'yellow', height: '230px' }, query: { media: 'screen', 'min-width': '320px', 'max-width' : '600px' }    }
+    , { type: 'stretch', styles: { background: 'green', height: '230px' }, query: { media: 'screen', 'max-width': '320px' }    }
+    , { type: 'slim', styles: { background: 'orange', height: '230px', width: '600px', border: '5px solid black' }, query: { media: 'screen', 'min-width': '600px' }    }
+  )
+  
+  var test2 = new Factory( 
+      $test2[0]
+    , { styles: { border: '5px solid black',  color: 'green' }  }
+    , { type: 'slim', styles: { background: 'pink', height: '230px', width: '320px' }, query: { media: 'screen', 'min-width': '320px', 'max-width' : '600px' }    }
+    , { type: 'stretch', styles: { background: 'green', height: '230px' }, query: { media: 'screen', 'max-width': '320px' }    }
+    , { type: 'slim', styles: { background: 'orange', height: '230px', width: '600px' }, query: { media: 'screen', 'min-width': '600px' }    }
+  )
+  */
+
+
+
+
+</script>

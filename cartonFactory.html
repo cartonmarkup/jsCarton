@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="jquery-1.7.1.js"></script>
+    <script src="domo.js"></script>
+    <script src="cartonFactory.js"></script>
+    <script src="domoCarton.js"></script>
+</head>
+<body></body>
+<script>
+var domo = domo.global(false)
+var F = cartonFactory( '.' ); 
+carton( F, domo );
+
+
+   
+   attr = {
+     cell: { styles: {border: '1px solid grey'  } }
+   , pinkSlim: { styles: { 'background-color': 'pink' }, node: 'h1'  }
+   , greenSlim: { styles: { 'background-color': 'green' } }
+   , queryStretch:  { 
+     styles: [ { 'color': 'blue', background: 'lightblue' }, { 'color': 'green', background: 'lightGreen' }  ]
+    , query: [ { 'min-width': '320px' }, { 'max-width': '320px' } ] 
+    } 
+   , yellowSticker: { styles: { 'background-color': 'yellow' } }
+   }
+   
+   //with ( domo  )
+   with ( attr )
+   
+   var test = BODY( 
+     HEAD(
+       TITLE( 'Yeahaa' )
+     )
+     ,
+     CELL( [ 600, 320 ], cell
+       ,
+       SLIM( 
+         pinkSlim
+         , 
+         H1( [ { color: '#fff' } ], 'Foo' 
+         )
+         ,
+         P( 'Baaa' ) 
+       )
+       , 
+       SLIM( 
+         greenSlim 
+         , 
+         P( 'FOOOO' )
+       )
+       ,
+       STRETCH( queryStretch
+         ,
+         P( 'Cool Stuff' )
+       ) 
+       ,
+       STICKER( [ 'auto', 10,  10, 'auto' ]
+         , yellowSticker 
+         ,
+         P( 'Yellow' )
+       )
+     )
+   )  
+
+  
+  
+  
+
+  var style = $( '<style/>' ).text( F.parse() ).appendTo( 'head' );
+  $( 'body' ).replaceWith(test)
+
+
+
+</script>
+</html>

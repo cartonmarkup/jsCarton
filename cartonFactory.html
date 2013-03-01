@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link href="style.css" rel="stylesheet" type="text/css">
+   
     <script src="jquery-1.7.1.js"></script>
     <script src="domo.js"></script>
     <script src="cartonFactory.js"></script>
@@ -11,40 +11,44 @@
 </head>
 <body></body>
 <script>
-var domo = domo.global(false)
-var F = cartonFactory( '.' ); 
-carton( F, domo );
+var domo = domo.global( false );
+carton( domo, '#' );
 
 
    
    attr = {
      cell: { styles: {border: '1px solid grey'  } }
-   , pinkSlim: { styles: { 'background-color': 'pink' }, node: 'h1'  }
-   , greenSlim: { styles: { 'background-color': 'green' } }
+   , pinkSlim: { styles: { backgroundColor: 'pink' }  }
+   , greenSlim: { styles: { backgroundColor: 'green' } }
    , queryStretch:  { 
-     styles: [ { 'color': 'blue', background: 'lightblue' }, { 'color': 'green', background: 'lightGreen' }  ]
-    , query: [ { 'min-width': '320px' }, { 'max-width': '320px' } ] 
+     styles: [ { color: 'blue', backgroundColor: 'lightblue' }, { 'color': 'green', backgroundColor: 'lightGreen' }  ]
+    , query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] 
     } 
-   , yellowSticker: { styles: { 'background-color': 'yellow' } }
+   , yellowSticker: {  backgroundColor: 'yellow', paddingLeft: 30, paddingRight: 30 } 
    }
-   
-   //with ( domo  )
+
    with ( attr )
    
-   var test = BODY( 
+   BODY( 
      HEAD(
        TITLE( 'Yeahaa' )
+       ,
+       LINK( { href: 'reset.css', rel:'stylesheet', type:'text/css'  } )
+       ,
+       STYLE(
+        STYLE.on('body', { color: 'pink' } )
+       )
      )
      ,
-     CELL( [ 600, 320 ], cell
+     CELL( [ 600, 320 ], 
+      cell
        ,
        SLIM( 
          pinkSlim
          , 
-         H1( [ { color: '#fff' } ], 'Foo' 
-         )
+         H1( [ { color: '#fff' } ], 'Foo' )
          ,
-         P( 'Baaa' ) 
+         P(    FRAGMENT('SS') ) 
        )
        , 
        SLIM( 
@@ -53,13 +57,14 @@ carton( F, domo );
          P( 'FOOOO' )
        )
        ,
-       STRETCH( queryStretch
+       STRETCH( 
+         queryStretch
          ,
          P( 'Cool Stuff' )
        ) 
        ,
-       STICKER( [ 'auto', 10,  10, 'auto' ]
-         , yellowSticker 
+       STICKER( 
+         [ 'span', yellowSticker, 'auto', 10,  10, 'auto' ]
          ,
          P( 'Yellow' )
        )
@@ -70,9 +75,12 @@ carton( F, domo );
   
   
 
-  var style = $( '<style/>' ).text( F.parse() ).appendTo( 'head' );
-  $( 'body' ).replaceWith(test)
-
+  //var style = $( '<style/>' ).text( carton.factory.parse() ).appendTo( 'head' );
+ // $('<link href="test.css" rel="stylesheet" type="text/css">').appendTo('head')
+  
+  //var styleSheetList = document.styleSheets;
+  //console.dir(styleSheetList[0] )
+  //document.styleSheets[0].cssText= carton.factory.parse() 
 
 
 </script>

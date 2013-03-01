@@ -1,5 +1,14 @@
  ! function  () {
     
+    var global = Function("return this")()
+
+    // Cache select Array/Object methods
+    
+    var shift = Array.prototype.shift
+    var unshift = Array.prototype.unshift
+    var concat = Array.prototype.concat
+    var has = Object.prototype.hasOwnProperty
+    
     var types = [ 'SLIM', 'STICKER', 'STRETCH', 'CELL' ];
     
     var tags = [
@@ -19,181 +28,269 @@
       "TRACK", "TT", "UL", "VAR", "VIDEO", "WBR"
     ];
     
-    
-    var sp = { 
-      cell: function ( w, h ) { return { styles: { width: ( px( w ) || 'auto' ), height: (  px( h ) || 'auto' ) } } } 
-    , sticker: function ( t, r, b, l  ) { 
-        var special = { top: 'auto', right: 'auto', bottom: 'auto', left: 'auto' };
-        if ( arguments.length == 2 ) { special.top = px( t ); special.left = px( r ); }
-        else { special.top = px( t ); special.right = px( r ); special.bottom = px( b ); special.left = px( l ); }
-        return { styles: special }
-      }
-    , def: function ( obj ) { return { styles: obj } }
-    
-    }
-     // Cache select Array/Object methods
-     var shift = Array.prototype.shift
-     var unshift = Array.prototype.unshift
-     var concat = Array.prototype.concat
-     var has = Object.prototype.hasOwnProperty
-     
-     var px = function ( x ) { 
-       if ( x && x !== 'auto' && ! ( x + '' ).match( /px|%/ ) ) return x+'px';
-       return x;
-     }
-     
-     var isKey =  function ( key ) { return 'styles,query,type'.indexOf( key ) > -1 }
-     var isArray = function ( el ) { return el instanceof Array; }
-     var extend = function ( a, b ) { 
-       // b into a !
-        var i; 
-        var toStr = Object.prototype.toString;
-        var astr = "[object Array]";
-       
-         //a = a || {}; 
-       
-         for ( i in b ) { 
-           if ( b.hasOwnProperty( i )  ) {
-             if ( typeof b[ i ] === 'object' && ! b[ i ].nodeType ) { 
-                if (  toStr.call( b[ i ] ) !== toStr.call( a[ i ] ) ) { 
-                  a[ i ] = ( toStr.call( b[ i ] ) === astr ) ? [] : {};
-                }
-                console.log( toStr.call( b[ i ] ) === astr , a[i], b[i])
-                extend( a[ i ] , b[ i ] );
-              }
-              else { a[ i ] = b[ i ]; }
-           }
-         }
-         return a;
-      }
- 
-      var factorify = function ( obj ) { 
- 
-       function filterAttr () {
-         var filter = { length: 1, keys:{}, attr: {} }
-         var i;
- 
-         for ( i in obj ) {  
-           if ( isKey( i ) ) { 
-             filter.keys[ i ] = obj[ i ];
-             filter.length = ( obj[ i ].length > filter.length  ) && isArray( obj[ i ] ) ?  obj[ i ].length : filter.length;
-           } 
-           else {
-             filter.attr[ i ] = obj[ i ];
-           } 
-         }
- 
-         return filter;
-       }
- 
-       function create () {
-         var args = [];
-         var filter = filterAttr();
-         var keys = filter.keys;
-         var l = filter.length;
-         var p = 0;
-         var i;
- 
-         for ( p; p < l; p++ ) { 
-           args[ p ] = {};
-           for ( i in keys ) {
-             if ( ! isArray( keys[ i ] ) ) args[ p ][ i ] = keys[ i ];
-             else args[ p ][ i ] = keys[ i ][ p ];    
-           }
-         }
-         return { factory: args, attributes: filter.attr };
-       } 
- 
-       return create(); 
-     }
- 
-      function xxx ( carton, type ) {
-       carton[ type ] =
-       carton[ type.toLowerCase() ] =
-     
-       function () {
-     
-         var args = [ 'div', { styles: {} } ];
-         var specialKey = isArray( arguments[ 0 ] ) ? shift.apply( arguments ) : [];
-         var attributes = arguments[ 0 ];
-         
-         if ( types.indexOf( type ) > -1 ) {
-           args[ 1 ].type = type.toLowerCase() 
-         } else {
-           args[ 0 ] = type.toLowerCase();
-         }
-          
-         if ( attributes && typeof attributes == "object" && ! attributes.nodeType ) {
-           extend( args[ 1 ], shift.apply( arguments ) );
-         }
-     
-         if ( args[ 1 ].node ) {
-          args[ 0 ] =  args[ 1 ].node;
-          delete args[ 1 ].node;
-         }
+    function addSpecialKeys () {
+      var args = concat.apply( [], arguments );
+      var key = args.shift();
+      var styles = typeof args[ 0 ] === 'object' ? args.shift() : {};
       
-         if ( specialKey.length ) {
-           
-           
-           var x = sp[ type.toLowerCase() ]
-           if ( typeof x === 'undefined' ) x = sp.def;
-           console.log( x )
-           extend( args[ 1 ], x.apply( null, specialKey ) )
-         }
+      function add ( loop, specials ) {
+        var l = loop.length;
+        var i = 0;
         
-         args = concat.apply(args, arguments)
-         
-         console.log(args )
-         return carton.QUERY.apply(carton, args)
-       }
-     
-     } 
-     ;
- 
-     typeof module == "object"
-          ? module.exports = Carton
-          : window.carton = Carton
-          ;
-     
-     var Factory;
-     var domo; 
+        for ( i; i < l; i++ ) styles[ loop[ i ] ] = px( specials[ i ] );
+        return { styles:  styles };
+      }
       
-     function Carton ( F, D ) {
-       Factory = F;
-       domo = D;
-       this.carton = this; 
+      this.cell = function ( w, h ) { 
+        var keys = [ 'width', 'height' ];
+        return add( keys, arguments );
+      } 
+      
+      this.sticker = function () { 
+        var l = arguments.length; 
+        var keys = ( l === 2 ) ? [ 'top', 'left' ] : [ 'top', 'right', 'bottom', 'left' ];
+        return add( keys, arguments); 
+      }
+      
+      if ( types.indexOf( key.toUpperCase() ) === -1 ) { 
+        return add( [], args );
+      }
+      return this[ key ].apply( null,  args )
+    } 
+    
+    // Turn a camelCase string into a hyphenated one.
+    // Used for CSS property names and DOM element attributes.
+    
+    function hyphenify ( text ) {
+      return text.replace( /[A-Z]/g, "-$&" ).toLowerCase();
+    }
+    
+    // add a measure
+    
+    function px ( value ) { 
+      //if ( value && value !== 'auto' && ! ( value + '' ).match( /px|%/ ) ) { 
+      if ( typeof value === 'number' ) { 
+        return value + 'px';
+      }
+      return value;
+    }
+    
+    function isKey ( key ) { 
+      return 'styles,query,type'.indexOf( key ) > -1 
+    }
+    
+    function isArray ( el ) { return el instanceof Array; }
+      
+    function extend ( a, b ) { 
+      // b into a !
+      var toStr = Object.prototype.toString;
+      var astr = "[object Array]";
+      var i; 
+    
+      a = a || {}; 
+    
+      for ( i in b ) { 
+        if ( b.hasOwnProperty( i )  ) {
+          if ( typeof b[ i ] === 'object' && ! b[ i ].nodeType ) { 
+            if (  toStr.call( b[ i ] ) !== toStr.call( a[ i ] ) ) { 
+              
+              a[ i ] = ( toStr.call( b[ i ] ) === astr ) ? [] : {};
+            }
+            
+            extend( a[ i ] , b[ i ] );
+          }
+          else { 
+            
+            a[ hyphenify( i ) ] = px( b[ i ] ); 
+          }
+        }
+      }
+      return a;
+    }
+    
+    function factorify ( obj ) { 
+    
+      function filterAttr () {
+        var filter = { length: 1, keys:{}, attr: {} }
+        var i;
+    
+        for ( i in obj ) {  
+          if ( isKey( i ) ) { 
+            filter.keys[ i ] = obj[ i ];
+            filter.length = ( obj[ i ].length > filter.length  ) && isArray( obj[ i ] ) ?  obj[ i ].length : filter.length;
+          } 
+          else {
+            filter.attr[ i ] = obj[ i ];
+          } 
+        }
+    
+        return filter;
+      }
+    
+      function create () {
+        var filter = filterAttr();
+        var keys = filter.keys;
+        var l = filter.length;
+        var args = [];
+        var p = 0;
+        var i;
+    
+        for ( p; p < l; p++ ) { 
+          args[ p ] = {};
+          for ( i in keys ) {
+            if ( ! isArray( keys[ i ] ) ) { 
+              
+              args[ p ][ i ] = keys[ i ];
+            }
+            else { 
+              
+              args[ p ][ i ] = keys[ i ][ p ];    
+            }
+          }
+        }
+        
+        return { factory: args, attributes: filter.attr };
+      } 
+    
+      return create(); 
+    }
+    
+    function makeQuery ( carton, type ) {
+      carton[ type ] = 
+        carton[ type.toLowerCase() ] =
+          function () {
+            var query = [ 'DIV', {} ];
+            var childNodes = extend( [], arguments ); 
+            var specials = childNodes[ 0 ]; 
+            var attributes; 
+           
+            if ( types.indexOf( type ) === -1 ) query[ 0 ] = type.toUpperCase();
+            else  query[ 1 ].type = type.toLowerCase();
+            
+            if ( isArray( specials )  ) {
+              
+              if ( typeof specials[ 0 ] === 'string' && tags.indexOf( specials[ 0 ].toUpperCase() ) > -1 ) {
+                query[ 0 ] = specials.shift().toUpperCase();
+              }
+              
+              if ( specials.length ) {
+                extend( query[ 1 ], addSpecialKeys( type.toLowerCase(), specials ) );
+              }
+              
+              childNodes.shift();
+              attributes = childNodes[ 0 ];
+            } 
+            else { 
+              attributes = specials;
+            }
+        
+            if ( attributes ) {
+              if ( typeof attributes == "object" && ! attributes.nodeType ) {
+                extend( query[ 1 ], attributes );
+                childNodes.shift()
+              } 
+            }
+
+            query = query.concat( childNodes );
+            return carton.QUERY.apply( carton, query );
+          }
+    }; // create 
+     
  
-       this.QUERY = function () {
-         var childNodes = concat.apply( [], arguments );
-         var nodeName = childNodes.shift();
-         var attributes = childNodes[ 0 ];
-         var sorted;
-         var element;
+    typeof module == "object"
+         ? module.exports = Carton
+         : window.carton = function ( D, F ) { return new Carton(global.document,  D, F ).global(true) }//window.carton = Carton
+         ;
          
-         if (attributes) {
- 
-           if ( typeof attributes == "object" && ! attributes.nodeType ) {
- 
+    var styleTag;
+    var domo;
+    
+    function Carton ( document, D, F ) {
+      
+      domo = D;
+      this.factory = '.#'.indexOf( F ) > -1 || ! F ? cartonFactory( F || '#' ) : F;
+      this.carton = this; 
+    
+      this.QUERY = function () {
+        var childNodes = concat.apply( [], arguments );
+        var nodeName = childNodes.shift();
+        var attributes = childNodes[ 0 ];
+        var element;
+        var sorted;
+    
+        if ( attributes ) {
+          if ( typeof attributes == "object" && ! attributes.nodeType ) {
             attributes = shift.apply( childNodes )
             sorted = factorify( attributes );
-            console.log( '-',sorted)
-           }
-         }
- 
-         //console.log(sorted.attributes)
-         element = domo.ELEMENT.apply( domo, concat.apply( [ nodeName,  sorted.attributes ], childNodes ) );
-         Factory.add( element, sorted.factory );
-         return element;
-       }  
-      
-       var i = types.length;
-       while ( i-- ) xxx( this, types[ i ] );
-      
-      var i = tags.length;
-      while ( i-- ) xxx( this, tags[ i ] );
-     
-     }  
-   } ()
-  ;
- 
+          }
+        }
+       
+        element = domo.ELEMENT.apply( domo, concat.apply( [ nodeName,  sorted.attributes ], childNodes ) );
+        
+        this.factory.add( element, sorted.factory );
+        
+        if ( nodeName === 'STYLE' ) {
+          styleTag = element;
+        }
+        
+        switch ( nodeName ) {
+          case "HTML":
+          case "HEAD":
+          case "BODY":
+          if ( styleTag ) styleTag.innerHTML = styleTag.innerHTML + this.factory.parse()
+        }
 
+        return element;
+      }  
+    
+      var extendedTags = types.concat( tags );
+      var i = extendedTags.length;
+      
+      while ( i-- ) makeQuery( this, extendedTags[ i ] );
+      
+      this.FRAGMENT = domo.FRAGMENT;
+      this.TEXT = domo.TEXT;
+      this.COMMENT = domo.COMMENT;
+      this.STYLE.on = domo.STYLE.on;
+      
+      this.global = function(on) {
+          var values = this.global.values
+          var key
+          var code
+      
+          if (on !== false) {
+            global.carton = this
+      
+            for (key in this) {
+              code = key.charCodeAt(0)
+      
+              if (code < 65 || code > 90) continue
+      
+              if (this[key] == global[key]) continue
+      
+              if (key in global) values[key] = global[key]
+      
+              global[key] = this[key]
+            }
+          }
+      
+          else {
+            delete global.carton
+      
+            for (key in this) {
+              if (key in values) {
+                if (global[key] == this[key]) global[key] = values[key]
+              }
+      
+              else delete global[key]
+            }
+          }
+      
+          return this
+        }
+      
+        // A place to store previous global properties
+        this.global.values = {}
+    }  
+}()
+;

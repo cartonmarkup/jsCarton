@@ -43,11 +43,12 @@
   typeof module == "object"
     ? module.exports = Domo
     : new Domo(global.document).global(true)
-
+  
+  
   // Create a new domo namespace, scoped to the given document.
   function Domo(document) {
     if (!document) throw new Error("No document provided.")
-
+ 
     this.domo = this
 
     // Create a DOM comment
@@ -205,7 +206,7 @@
 
       return this
     }
-
+    
     // A place to store previous global properties
     this.global.values = {}
   }

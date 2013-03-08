@@ -1,13 +1,14 @@
 //var D = require('domo')//.global();
 //var F = require( './cartonFactory' )( '#', domo.STYLE() );
-var C = require( './lib/index').global()
-var http = require('http');
 
 var css = {
   alignRight: { 'text-align': 'right' } 
 , alignLeft: { 'text-align': 'left' } 
 , alignCenter: { 'text-align': 'center' } 
-
+, root: {
+  color: '#ffffff',
+  fontSize: 12
+}
 , body: { 
     backgroundColor: '#404040'
   }
@@ -50,68 +51,77 @@ var css = {
     margin: 5
   }
 }
-console.log( C )
 
-http.createServer( function( req, res ) {
+var C = require( './lib/index' )( { selector: '#', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
+var http = require('http');
 
-  if ( req.url  === '/favicon.ico') res.end('');
-  res.writeHead( 200, { 'Content-Type': 'text/html' })
-   
-   with( css )
-   res.end( DOCUMENT(
-    HTML(
-      HEAD(
-        TITLE( 'cssCarton - sample' )
-        ,
-        META( { name:"viewport", content:"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"} )
-        ,
-        META( { httpEquiv:"Content-Type", content:"text/html;charset=utf-8"} )
-        ,
-        STYLE()
-      )
+
+
+
+with( css ) DOC = DOCUMENT(
+  HTML(
+    HEAD(
+      TITLE( 'cssCarton - sample' )
       ,
-      BODY( [ body, alignCenter ]
+      META( { name:"viewport", content:"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"} )
+      ,
+      META( { httpEquiv:"Content-Type", content:"text/html;charset=utf-8"} )
+      ,
+      STYLE()
+    )
+    ,
+    BODY( [ body, alignCenter ]
+      ,
+      SLIM( [ page ] 
         ,
-        SLIM( [ page ] 
-          ,
-          CELL( { styles: [ { width: 600, height: 500 }, { width: 300, height: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
-          ,
-            CELL( [ 300, 400, 'min' ] // two strings w, h one string h
-              , 
-              CELL( [ 300, 200 ]
-                ,
-                STRETCH( [ carton ], 'I am a carton stretched to my parent cells', BR(), '( top_left ) width' )
-              )
+        CELL( { styles: [ { width: 600, height: 500 }, { width: 300, height: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+        ,
+          CELL( [ 300, 400, 'min' ] // two strings w, h one string h
+            , 
+            CELL( [ 300, 200 ]
               ,
-              CELL( [ 300, 200 ] 
-                ,
-                STICKER( [ disrupter_following, -30, -10 ], 'I am a sticker' ) // two numbers top, left
-                ,
-                FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed ' ) // four numbers top, right,bottom, left
-              )
+              STRETCH( [ carton ], 'I am a carton stretched to my parent cells', BR(), '( top_left ) width' )
             )
             ,
-            CELL( [ 300, 400 ] 
+            CELL( [ 300, 200 ] 
               ,
-              SLIM( [ carton, alignLeft ], 'As', BR(), 'slim',  BR(), 'cartons' )
+              STICKER( [ disrupter_following, -30, -10 ], 'I am a sticker' ) // two numbers top, left
               ,
-              SLIM( [ carton, alignCenter ], 'we', BR(), 'stand', BR(), 'in' )
-              ,
-              SLIM( [ carton, alignRight ], 'a', BR(), 'Line' )
-              , 
-              CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
-    
+              FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed ' ) // four numbers top, right,bottom, left
             )
+          )
+          ,
+          CELL( [ 300, 400 ] 
             ,
-            CELL( [ '100%', 100 ]
-              ,
-              FIT( [ fitter ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
-            )
+            SLIM( [ carton, alignLeft ], 'As', BR(), 'slim',  BR(), 'cartons' )
+            ,
+            SLIM( [ carton, alignCenter ], 'we', BR(), 'stand', BR(), 'in' )
+            ,
+            SLIM( [ carton, alignRight ], 'a', BR(), 'Line' )
+            , 
+            CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
+  
+          )
+          ,
+          CELL( [ '100%', 100 ]
+            ,
+            FIT( [ fitter ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
           )
         )
       )
     )
-  ).outerHTML 
+  )
+)
+carton.set({type:'slim' }, { styles: { color:'pink'} } )
+
+
+http.createServer( function( req, res ) {
+  console.log( req )
+  if ( req.url  === '/favicon.ico') res.end('');
+  res.writeHead( 200, { 'Content-Type': 'text/html' })
+   
+   
+   res.end( DOC.outerHTML 
   )
   ;
 })

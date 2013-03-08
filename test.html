@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>cartonFactory - test </title>
-    <script src="cartonFactory.js"></script>
+    <script src="lib/cartonFactory.js"></script>
     <link href="test.css" rel="stylesheet"  type="text/css">
     <style></style>
 </head>
@@ -24,7 +24,7 @@
 <script>
 
   var S = document.getElementsByTagName( 'style' )[ 0 ];
-  var F = cartonFactory( '.', S );
+  var F = cartonFactory( { selector: '.', styleTag: S });
   
   var baseStyles = { styles: { padding: '20px', color: 'grey', background: 'lightgrey' } };
   
@@ -108,6 +108,7 @@
   function removeTest () {
     console.log( '---------------------------------' );
     console.log( 'removed', F.remove({ styles: { color: 'blue'} }) );
+    
   } 
   
   function destroyTest () {
@@ -115,6 +116,7 @@
     console.log( 'index > DOM:', F.index('dom').length, 'FACTORIES:', F.index('factories').length );
     console.log( 'destroyed', F.destroy( document.getElementById( 'carton_lightblue' ) ) );
     console.log( 'index > DOM:', F.index('dom').length, 'FACTORIES:', F.index('factories').length );
+  
   }
   
   var nothing = F.add(
@@ -172,8 +174,7 @@
  document.getElementsByTagName( 'button' )[ 0 ].onclick = getTest  
  document.getElementsByTagName( 'button' )[ 1 ].onclick = removeTest  
  document.getElementsByTagName( 'button' )[ 2 ].onclick = destroyTest  
- document.getElementsByTagName( 'button' )[ 3 ].onclick = function () { F.set({ type: ['slim', 'stretch'] }, {type:'stretch', styles: { color: 'indigo'} }) }
- console.log( F.parse() )
+ document.getElementsByTagName( 'button' )[ 3 ].onclick = function () { F.set({ type: ['slim', 'stretch'] }, {type:'stretch', styles: { color: 'grey'} } );  }
 
 
 

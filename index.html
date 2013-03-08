@@ -5,21 +5,24 @@
     <title></title>
     <script src="jquery-1.7.1.js"></script>
     <script src="../domo/lib/domo.js"></script>
-    <script src="cartonFactory.js"></script>
-    <script src="domoCarton.js"></script>
+    <script src="lib/cartonFactory.js"></script>
+    <script src="lib/carton.js"></script>
     
 </head>
 <body>
 <script>
-var D = domo.global( false );
-var F = cartonFactory('.') 
-var C = carton( D, F ).global( false );
+
+ 
+
 
 var css = {
   alignRight: { 'text-align': 'right' } 
 , alignLeft: { 'text-align': 'left' } 
 , alignCenter: { 'text-align': 'center' } 
-
+, root: {
+    color: '#ffffff',
+    fontSize: 12
+  }
 , body: { 
     backgroundColor: '#404040'
   }
@@ -62,8 +65,13 @@ var css = {
     margin: 5
   }
 }
+var S = { selector: '#', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
+//var F = cartonFactory(S) 
+//var C = carton( D, F ).global( false );
 
-with ( C )
+carton( domo, S );
+
+//with ( C )
 with ( css )
 
 HTML(
@@ -83,7 +91,7 @@ HTML(
     ,
     SLIM( [ page ] 
       ,
-      CELL( { styles: [ { width: 600, height: 500 }, { width: 300, height: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+      CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
       // QUERY( 'div', { type: 'cell', styles: [ { width: 300 }, { width: 600 }  ], query: [ { minWidth: '320px' },{ maxWidth: '320px' } ] }) 
         ,
         CELL( [ 300, 400, 'min' ] // two strings w, h one string h

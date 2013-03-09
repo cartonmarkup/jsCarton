@@ -52,7 +52,7 @@ var css = {
   }
 }
 
-var C = require( './lib/index' )( { selector: '#', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
+var C = require( './lib/index' )( { selector: '.', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
 var http = require('http');
 
 
@@ -74,7 +74,7 @@ with( css ) DOC = DOCUMENT(
       ,
       SLIM( [ page ] 
         ,
-        CELL( { styles: [ { width: 600, height: 500 }, { width: 300, height: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+        CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
         ,
           CELL( [ 300, 400, 'min' ] // two strings w, h one string h
             , 

@@ -87,7 +87,7 @@ HTML(
     STYLE()
   )
   ,
-  BODY( [ body, alignCenter ]
+  BODY( [ body, 'center' ]
     ,
     SLIM( [ page ] 
       ,
@@ -111,13 +111,13 @@ HTML(
         ,
         CELL( [ 300, 400 ] 
           ,
-          SLIM( [ carton, alignLeft ], 'As', BR(), 'slim',  BR(), 'cartons' )
+          SLIM( [ carton, 'left' ], 'As', BR(), 'slim',  BR(), 'cartons' )
           ,
-          SLIM( [ carton, alignCenter ], 'we', BR(), 'stand', BR(), 'in' )
+          SLIM( [ carton, 'center' ], 'we', BR(), 'stand', BR(), 'in' )
           ,
-          SLIM( [ carton, alignRight ], 'a', BR(), 'Line' )
+          SLIM( [ carton, 'right' ], 'a', BR(), 'Line' )
           , 
-          CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
+          CHOPPED( [ twoLines, 'left' ], 'As a chopped styleable I can exist on more than one line' )
         
         )
         ,

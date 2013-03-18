@@ -15,6 +15,8 @@
   <div id="carton_green">Pink ( query - styles ) </div>
   <div id="carton_pink">Pink ( styles, type [ slim ] ) </div>
   <div id="carton_lightblue">Lightblue ( styles, query - types [ slim, stretch ] )</div>
+  <div id="carton_hover">Hover</div>
+  
   
   <button>get</button>
   <button>remove</button>
@@ -162,6 +164,14 @@
 
  )
  
+ var hover = F.add( 
+   document.getElementById( 'carton_hover' )
+ , baseStyles
+ , { styles: { background: 'black', color: 'white'}, pseudo: ':hover'  }
+ , { type: 'slim', query: { 'min-width' : '320px', media: 'all' } }
+ , { type: 'stretch', query: { 'max-width' : '320px', media: 'all'  } }
+ 
+ )
  
  var btn = F.add( 
    document.getElementsByTagName( 'button' )[ 0 ]

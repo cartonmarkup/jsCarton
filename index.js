@@ -2,10 +2,8 @@
 //var F = require( './cartonFactory' )( '#', domo.STYLE() );
 
 var css = {
-  alignRight: { 'text-align': 'right' } 
-, alignLeft: { 'text-align': 'left' } 
-, alignCenter: { 'text-align': 'center' } 
-, root: {
+
+  root: {
   color: '#ffffff',
   fontSize: 12
 }
@@ -52,7 +50,7 @@ var css = {
   }
 }
 
-var C = require( './lib/index' )( { selector: '.', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
+var C = require( './lib/index' )( { selector: '.', showGrid: true, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
 var http = require('http');
 
 
@@ -70,9 +68,9 @@ with( css ) DOC = DOCUMENT(
       STYLE()
     )
     ,
-    BODY( [ body, alignCenter ]
+    BODY( [ body, 'center' ]
       ,
-      SLIM( [ page ] 
+      SLIM( [ page, false ] 
         ,
         CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
         ,
@@ -91,13 +89,13 @@ with( css ) DOC = DOCUMENT(
             )
           )
           ,
-          CELL( [ 300, 400 ] 
+          CELL( [ 300, 400, 'left' ] 
             ,
-            SLIM( [ carton, alignLeft ], 'As', BR(), 'slim',  BR(), 'cartons' )
+            SLIM( [ carton ], 'As', BR(), 'slim',  BR(), 'cartons' )
             ,
-            SLIM( [ carton, alignCenter ], 'we', BR(), 'stand', BR(), 'in' )
+            SLIM( [ carton, 'center' ], 'we', BR(), 'stand', BR(), 'in' )
             ,
-            SLIM( [ carton, alignRight ], 'a', BR(), 'Line' )
+            SLIM( [ carton, 'right' ], 'a', BR(), 'Line' )
             , 
             CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
   
@@ -116,7 +114,6 @@ carton.set({type:'slim' }, { styles: { color:'pink'} } )
 
 
 http.createServer( function( req, res ) {
-  console.log( req )
   if ( req.url  === '/favicon.ico') res.end('');
   res.writeHead( 200, { 'Content-Type': 'text/html' })
    

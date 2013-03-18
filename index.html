@@ -16,10 +16,8 @@
 
 
 var css = {
-  alignRight: { 'text-align': 'right' } 
-, alignLeft: { 'text-align': 'left' } 
-, alignCenter: { 'text-align': 'center' } 
-, root: {
+
+ root: {
     color: '#ffffff',
     fontSize: 12
   }
@@ -34,7 +32,9 @@ var css = {
 
 , carton: { 
     backgroundColor: '#404040',
-    padding: 20 
+    padding: 20,
+    ':hover': { color: 'pink' }, 
+    ':active': { color: 'green' } 
   } 
 
 , disrupter_following: { 
@@ -65,7 +65,7 @@ var css = {
     margin: 5
   }
 }
-var S = { selector: '#', extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
+var S = { selector: '.', showGrid: true, once: function () { /*console.log( 'ONCE', arguments )*/ } , on: function () { /*console.log( 'ON', arguments )*/ }, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
 //var F = cartonFactory(S) 
 //var C = carton( D, F ).global( false );
 
@@ -82,16 +82,16 @@ HTML(
     ,
     META( { httpEquiv:"Content-Type", content:"text/html;charset=utf-8"} )
     ,
-   // LINK( { href: 'test.css',  rel:"stylesheet",  type:"text/css"})
+    // LINK( { href: 'test.css',  rel:"stylesheet",  type:"text/css"})
     //,
     STYLE()
   )
   ,
   BODY( [ body, 'center' ]
     ,
-    SLIM( [ page ] 
+    SLIM( [ page, false ] 
       ,
-      CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+      CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 } ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
       // QUERY( 'div', { type: 'cell', styles: [ { width: 300 }, { width: 600 }  ], query: [ { minWidth: '320px' },{ maxWidth: '320px' } ] }) 
         ,
         CELL( [ 300, 400, 'min' ] // two strings w, h one string h
@@ -103,27 +103,27 @@ HTML(
           ,
           CELL( [ 300, 200 ] 
             ,
-            STICKER( [ disrupter_following, -30, -10 ], 'I am a sticker' ) // two numbers top, left
+            STICKER( [ disrupter_following, -30, -10  ], 'I am a sticker') // two numbers top, left
             ,
             FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed ' ) // four numbers top, right,bottom, left
           )
         )
         ,
-        CELL( [ 300, 400 ] 
+        CELL( [ 300, 400, 'left' ] 
           ,
-          SLIM( [ carton, 'left' ], 'As', BR(), 'slim',  BR(), 'cartons' )
+          SLIM( [ carton ], 'As', BR(), 'slim',  BR(), 'cartons' )
           ,
           SLIM( [ carton, 'center' ], 'we', BR(), 'stand', BR(), 'in' )
           ,
           SLIM( [ carton, 'right' ], 'a', BR(), 'Line' )
           , 
-          CHOPPED( [ twoLines, 'left' ], 'As a chopped styleable I can exist on more than one line' )
+          CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
         
         )
         ,
         CELL( [ '100%', 100 ]
           ,
-          FIT( [ fitter ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
+          FIT( [ fitter, true ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
         )
       )
     )

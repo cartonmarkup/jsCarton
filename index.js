@@ -18,7 +18,9 @@ var css = {
 
 , carton: { 
     backgroundColor: '#404040',
-    padding: 20 
+    padding: 20,
+    '_:hover': { color: 'pink' }, 
+    '_:active': { color: 'green' } 
   } 
 
 , disrupter_following: { 
@@ -50,7 +52,7 @@ var css = {
   }
 }
 
-var C = require( './lib/index' )( { selector: '.', showGrid: true, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }).global()
+var C = require( './lib/index' )( { selector: '.', showGrid: true, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }, [ { minWidth: '320px' }, { maxWidth: '320px' } ] ).global()
 var http = require('http');
 
 
@@ -72,9 +74,11 @@ with( css ) DOC = DOCUMENT(
       ,
       SLIM( [ page, false ] 
         ,
-        CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+        //CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 }  ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+        CELL( [ 600,'auto','auto','auto','auto', 500 ], [ 300, 'auto','auto','auto', 'auto', 500 ]
+        
         ,
-          CELL( [ 300, 400, 'min' ] // two strings w, h one string h
+          CELL( [ 'auto', 'auto', 300, 400 ]  // two strings w, h one string h
             , 
             CELL( [ 300, 200 ]
               ,
@@ -110,7 +114,7 @@ with( css ) DOC = DOCUMENT(
     )
   )
 )
-carton.set({type:'slim' }, { styles: { color:'pink'} } )
+//carton.set({type:'slim' }, { styles: { color:'pink'} } )
 
 
 http.createServer( function( req, res ) {

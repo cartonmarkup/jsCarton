@@ -65,11 +65,11 @@ var css = {
     margin: 5
   }
 }
-var S = { selector: '.', showGrid: true, once: function () { /*console.log( 'ONCE', arguments )*/ } , on: function () { /*console.log( 'ON', arguments )*/ }, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
+var S = { selector: '#', showGrid: true, once: function () { /*console.log( 'ONCE', arguments )*/ } , on: function () { /*console.log( 'ON', arguments )*/ }, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
 //var F = cartonFactory(S) 
 //var C = carton( D, F ).global( false );
 
-carton( domo, S );
+carton( domo, S, [ { minWidth: '320px' }, { maxWidth: '320px' } ]  );
 
 //with ( C )
 with ( css )
@@ -89,12 +89,16 @@ HTML(
   ,
   BODY( [ body, 'center' ]
     ,
-    SLIM( [ page, false ] 
-      ,
-      CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 } ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+    SLIM( [ page, false ]
+     ,
       // QUERY( 'div', { type: 'cell', styles: [ { width: 300 }, { width: 600 }  ], query: [ { minWidth: '320px' },{ maxWidth: '320px' } ] }) 
-        ,
-        CELL( [ 300, 400, 'min' ] // two strings w, h one string h
+      // Short 
+      // CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 } ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
+      // Shorter 
+      CELL( [ 600,'auto','auto','auto','auto', 500 ], [ 300, 'auto','auto','auto', 'auto', 500 ]
+      
+          ,
+        CELL( [ 'auto', 'auto', 300, 400 ] // two strings w, h one string h
           , 
           CELL( [ 300, 200 ]
             ,
@@ -103,9 +107,9 @@ HTML(
           ,
           CELL( [ 300, 200 ] 
             ,
-            STICKER( [ disrupter_following, -30, -10  ], 'I am a sticker') // two numbers top, left
+            STICKER( [ disrupter_following, -30, -10  ], 'I am a sticker' ) // two numbers top, left
             ,
-            FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed ' ) // four numbers top, right,bottom, left
+            FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed' ) // four numbers top, right,bottom, left
           )
         )
         ,
@@ -125,7 +129,7 @@ HTML(
           ,
           FIT( [ fitter, true ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
         )
-      )
+      ) 
     )
   )
 )

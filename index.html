@@ -1,139 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title></title>
-    <script src="jquery-1.7.1.js"></script>
-    <script src="../domo/lib/domo.js"></script>
-    <script src="lib/cartonFactory.js"></script>
-    <script src="lib/carton.js"></script>
-    
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>jsCarton - sample</title>
+  <script src="../domo/lib/domo.js"></script>
+  <script src="lib/cartonFactory.js"></script>
+  <script src="lib/carton.js"></script>
 </head>
 <body>
-<script>
+  <script>
 
- 
+    var css = {
 
+      root: {
+        color: '#ffffff',
+        fontSize: 12
+      },
 
-var css = {
+      body: {
+        backgroundColor: '#404040'
+      },
 
- root: {
-    color: '#ffffff',
-    fontSize: 12
-  }
-, body: { 
-    backgroundColor: '#404040'
-  }
+      page: {
+        backgroundColor: '#A6A6A6',
+        marginTop: 20
+      },
 
-, page: {  
-    backgroundColor: '#A6A6A6', 
-    marginTop: 20 
-  }
+      carton: {
+        backgroundColor: '#404040',
+        padding: 20,
+        '_:hover': { color: 'pink' },
+      },
 
-, carton: { 
-    backgroundColor: '#404040',
-    padding: 20,
-    '_:hover': { color: 'pink' }, 
-    '_:active': { color: 'green' } 
-  } 
+      disrupter_following: {
+        backgroundColor: '#404040',
+        width: 150,
+        height: 50,
+        padding: 20
+      },
 
-, disrupter_following: { 
-    backgroundColor: '#404040', 
-    width: 150, 
-    height: 50, 
-    padding: 20 
-  }
+      disrupter_not_following: {
+        backgroundColor: '#404040',
+        width: 320, 
+        height: 25, 
+        padding: 20, 
+        marginLeft: -180 
+      },
 
-, disrupter_not_following: { 
-    backgroundColor: '#404040', 
-    width: 320, 
-    height: 25, 
-    padding: 20, 
-    marginLeft: -180 
-  }
+      twoLines: {
+        backgroundColor: '#404040',
+        backgroundColor: '#404040',
+        padding: 20,
+        lineHeight: 52
+      },
 
-, twoLines: {
-    backgroundColor: '#404040',
-    backgroundColor: '#404040',
-    padding: 20,
-    lineHeight: 52
-  }
+      fitter: {
+        backgroundColor: '#404040',
+        padding: 20,
+        margin: 5
+      }
+    }
 
-, fitter: { 
-    backgroundColor: '#404040',
-    padding: 20,
-    margin: 5
-  }
-}
-var S = { selector: '#', showGrid: true, once: function () { /*console.log( 'ONCE', arguments )*/ } , on: function () { /*console.log( 'ON', arguments )*/ }, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root  } }
-//var F = cartonFactory(S) 
-//var C = carton( D, F ).global( false );
-
-carton( domo, S, [ { minWidth: '320px' }, { maxWidth: '320px' } ]  );
-
-//with ( C )
-with ( css )
-
-HTML(
-  HEAD(
-    TITLE( 'cssCarton - sample' )
-    ,
-    META( { name:"viewport", content:"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"} )
-    ,
-    META( { httpEquiv:"Content-Type", content:"text/html;charset=utf-8"} )
-    ,
-    // LINK( { href: 'test.css',  rel:"stylesheet",  type:"text/css"})
-    //,
-    STYLE()
-  )
-  ,
-  BODY( [ body, 'center' ]
-    ,
-    SLIM( [ page, false ]
-     ,
-      // FACTORY( 'div', { type: 'cell', styles: [ { width: 300 }, { width: 600 }  ], query: [ { minWidth: '320px' },{ maxWidth: '320px' } ] }) 
-      // Short 
-      // CELL( { styles: [ { width: 600, minHeight: 500 }, { width: 300, minHeight: 500 } ], query: [ { minWidth: '320px' }, { maxWidth: '320px' } ] } 
-      // Shorter 
-      CELL( [ 600,'auto','auto','auto','auto', 500 ], [ 300, 'auto','auto','auto', 'auto', 500 ]
-      
-          ,
-        CELL( [ 'auto', 'auto', 300, 400 ] // two strings w, h one string h
-          , 
-          CELL( [ 300, 200 ]
-            ,
-            STRETCH( [ carton ], 'I am a carton stretched to my parent cells', BR(), '( top_left ) width' )
-          )
-          ,
-          CELL( [ 300, 200 ] 
-            ,
-            STICKER( [ disrupter_following, -30, -10  ], 'I am a sticker' ) // two numbers top, left
-            ,
-            FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed' ) // four numbers top, right,bottom, left
-          )
-        )
-        ,
-        CELL( [ 300, 400, 'left' ] 
-          ,
-          SLIM( [ carton ], 'As', BR(), 'slim',  BR(), 'cartons' )
-          ,
-          SLIM( [ carton, 'center' ], 'we', BR(), 'stand', BR(), 'in' )
-          ,
-          SLIM( [ carton, 'right' ], 'a', BR(), 'Line' )
-          , 
-          CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
-        
-        )
-        ,
-        CELL( [ '100%', 100 ]
-          ,
-          FIT( [ fitter, true ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
-        )
-      ) 
+    carton(
+      domo,
+      { selector: '#', showGrid: true, extend: { slim: css.root , stretch: css.root , sticker: css.root , chopped: css.root , fixed: css.root , fit: css.root }, once: function () { console.log( 'ONCE', arguments ) }, on: function () { console.log( 'ON', arguments ) } },
+      [ { minWidth: 320 }, { maxWidth: 320 } ]
     )
-  )
-)
+
+    with ( css )
+
+    HTML(
+      HEAD(
+        TITLE( 'jsCarton - sample' )
+        ,
+        META( { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' } )
+        ,
+        META( { httpEquiv: 'Content-Type', content: 'text/html;charset=utf-8' } )
+        ,
+        LINK( { href: 'reset.css',  rel: 'stylesheet',  type: 'text/css' } )
+        ,
+        STYLE()
+      )
+      ,
+      BODY( [ body, 'center' ]
+      ,
+        SLIM( [ page, false ]
+          ,
+          CELL( [ 600,'auto','auto','auto','auto', 500 ], [ 300, 'auto','auto','auto', 'auto', 500 ]
+            ,
+            CELL( [ 'auto', 'auto', 300, 400 ]
+              , 
+              CELL( [ 300, 200 ]
+                ,
+                STRETCH( [ carton ], 'I am a carton stretched to my parent cells', BR(), '( top_left ) width' )
+              )
+              ,
+              CELL( [ 300, 200 ]
+                ,
+                STICKER( [ disrupter_following, -30, -10  ], 'I am a sticker' )
+                ,
+                FIXED( [ disrupter_not_following, 'auto', 'auto', 15, '50%' ], 'I am fixed' )
+              )
+            )
+            ,
+            CELL( [ 300, 400, 'left' ]
+              ,
+              SLIM( [ carton ], 'As', BR(), 'slim',  BR(), 'cartons' )
+              ,
+              SLIM( [ carton, 'center' ], 'we', BR(), 'stand', BR(), 'in' )
+              ,
+              SLIM( [ carton, 'right' ], 'a', BR(), 'Line' )
+              ,
+              CHOPPED( [ twoLines ], 'As a chopped styleable I can exist on more than one line' )
+            )
+            ,
+            CELL( [ '100%', 100 ]
+              ,
+              FIT( [ fitter, true ], 'I am a fit styleable.', 'I am always fitting to my parent cell' )
+            )
+          )
+        )
+      )
+    )
 
 </script>
+<noscript>We are Sorry, but this page needs JavaScript. Please enable it.</noscript>
 </body>
 </html>

@@ -1,6 +1,8 @@
 
   var http = require( 'http' );
   var carton = require( './lib/index' );
+  var fs = require( 'fs' );
+  var reset = fs.readFileSync( 'reset.css' );
   var css = {
 
     root: {
@@ -69,6 +71,8 @@
             ,
             META( { httpEquiv: 'Content-Type', content: 'text/html;charset=utf-8' } )
             ,
+            LINK( { href: 'reset.css',  rel: 'stylesheet',  type: 'text/css' } )
+            ,
             STYLE()
           )
           ,
@@ -115,10 +119,16 @@
       )
 
     )
-
+  
   http.createServer( function( req, res ) {
-    if ( req.url  === '/favicon.ico') res.end( '' );
-
+    if ( req.url  === '/favicon.ico' ) res.end( '' );
+    if ( req.url  === '/reset.css' ) {
+      
+      res.writeHead( 200, { 'Content-Type': 'text/css' }); 
+      res.end( reset );
+    
+    } 
+    
     res.writeHead( 200, { 'Content-Type': 'text/html' });
     res.end( DOC.outerHTML );
   })

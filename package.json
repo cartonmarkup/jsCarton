@@ -1,7 +1,7 @@
 {
   "name": "carton",
   "version": "0.1.0",
-  "description": " 'Combines domo.js with cssCarton to write carton items like domo/HTML markup'",
+  "description": "Combines domo.js with cssCarton to write carton items like domo/HTML markup",
   "main": "lib/index.js",
   "browserify": ["lib/domo.js", "lib/cartonFactory.js", "lib/carton.js" ],
   "scripts": {

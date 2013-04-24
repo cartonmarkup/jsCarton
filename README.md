@@ -243,7 +243,7 @@ This is a simple loop which can be used to iterate over any array or object to g
 markup for many times:
 
     CELL(
-      EACH( [ 'A', 'B', 'C' ] , function ( item, index ) {
+      EACH( [ 'A', 'B', 'C' ] , function ( item, index, length ) {
         return STRETCH( [ 'h' +index+1 ], key )
       })
     )

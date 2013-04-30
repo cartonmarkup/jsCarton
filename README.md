@@ -116,7 +116,7 @@ FACTORY function:
 
     FACTORY( 'div', { type: 'cell', styles: { width: '100%' } }, ... ) 
 
-Which is also the most detailed way to define a jsCarton markup. A shorter version of corse is to
+Which is also the most detailed way to define a jsCarton markup. A shorter version of course is to
 use the CELL tag instead:
 
     CELL( { styles: {  width: '100%' } }, ... )

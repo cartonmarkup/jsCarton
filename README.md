@@ -5,7 +5,7 @@ Which I like allot, because it made me start thinking about a whole new way usin
 our daily work with HTML/CSS templating. The big deal about cssCarton is that it doesn't base on a 
 column/gutter system like most other css-frameworks do, instead cssCarton offers a bunch of default
 css-classes that provides an DOM-Element with a special default behavior. If you don't know the
-cssCarton yet, you should follow this [link](http://github.com/mathiasprinz/cssCarton/readme.md) before
+cssCarton yet, you should follow this [link](http://github.com/cartonmarkup/cssCarton/readme.md) before
 moving on. Anyway what jsCarton does, is to extend the already great dōmo markup with some extra cssCarton
 specific extra "tags". I think an example will help to understand best:
 
@@ -35,7 +35,8 @@ As dōmo – jsCarton works in both Worlds:
 
 ### Browser
     
-    <script src="domo.js"></script> 
+    <script src="domo.js"></script>
+    <script src="help.js"></script>
     <script src="cartonFactory.js"></script>
     <script src="carton.js"></script>
 
@@ -52,23 +53,22 @@ Now that we have cleared the hurdle of installing jsCarton we have to call the c
 to pollute JavaScripts global object with it:
  
     // Browser
-    carton( domo )
+    carton()
     
     // In node.js
     carton().global()
 
-The mayor difference between browsers and node.js is that on the client the dōmo namespace must be
-passed to the initial function call. Don't let you get disturb by the `.global()` in the server
+Don't let you get disturb by the `.global()` in the server
 example, it's part of the dōmo way and not important for now. If you are interested in the 
 `.global()` method, search for "Convenience versus cleanliness" on
 [http://domo-js.com/](http://domo-js.com/) jsCarton does it exactly the same like dōmo does.
 
 ### Settings for cartonFactory
-A mayor part of jsCarton is it's [factory](http://github.com/mathiasprinz/cartonFactory/readme.md).
+A mayor part of jsCarton is it's [factory](http://github.com/cartonmarkup/cartonfactory/readme.md).
 As said before it does all the CSS-magic for you. If you pass an extra object to the initial call 
 of the carton you can influence some of it's behaviour.
 
-    carton( domo, { selector: '.' } )
+    carton( { selector: '.' } )
 
 This for example will let the factory know that you prefer to use CSS-classes instead of ids to
 bind the generated styles to your DOM elements. The following is an list of all factory options:
@@ -238,6 +238,16 @@ styling:
 
       STICKER([ 15, 15, { fontSize: 32 } ], [ 5, 5, { fontSize: 16 } ], ... )
 
+## update
+Sometimes it is necessary to update the settings of an DOM-element later, after the first parsing process. Sure you could
+manipulate it with something like jQuery to apply your changes but this isn't necessary. You can always use the update method 
+to change properties for a node managed by jsCarton without polluting the DOM with style attributes:
+    
+    carton.update( node, { styles: {...}, align: 'left' }, boolean ) 
+    
+This will parse new css-code for the node and pass it into the style-tag, if it is defined inside the head of your document. 
+The boolean passed as the last argument controls if the update will replace the existing settings completely ( true ) or mix them together ( false ).
+    
 ## Loops
 This is a simple loop which can be used to iterate over any array or object to generate the same
 markup for many times:

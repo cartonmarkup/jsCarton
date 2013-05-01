@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Combines domo.js with cssCarton to write carton items like domo/HTML markup",
   "main": "lib/index.js",
-  "browserify": ["lib/domo.js", "lib/cartonFactory.js", "lib/carton.js" ],
+  "browserify": ["lib/domo.js", "lib/cartonFactory.js", "lib/carton.js", "lib/help.js"  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

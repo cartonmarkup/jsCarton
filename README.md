@@ -254,7 +254,7 @@ markup for many times:
 
     CELL(
       EACH( [ 'A', 'B', 'C' ] , function ( item, index, length ) {
-        return STRETCH( [ 'h' +index+1 ], key )
+        return STRETCH( [ 'h' +index+1 ], item )
       })
     )
 
@@ -273,10 +273,19 @@ the same tree-level you can use dōmos FRAGMENT function to do so:
       EACH( [ 'A', 'B', 'C' ] , function ( item, index ) {
         return FRAGMENT(
           STRETCH( [ 'h' +index+1 ], index ),
-          STRETCH( [ p ], key )
+          STRETCH( [ p ], item )
         )
       })
     )
+
+Also you can use an object to iterate over:
+    
+    CELL(
+      EACH( { A:'b', B:'b', C:'c' } , function ( value, key ) {
+        return STRETCH( key, ':', value )
+      })
+    )
+
 
 ## Native dōmo
 If you wanna use an dōmo-markup-element without adding it to the factory you can add an 
@@ -293,7 +302,7 @@ also important to notice that the dōmo version used in jsCarton is modified to 
 Explorer 8 and the cartonFactory in node.js.
 
 ## Licence
-cssCarton is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+jsCarton is released under the [MIT License](http://www.opensource.org/licenses/MIT).
 
 ## Thanks allot
 Comments or ideas are welcome at mathias_prinz@me.com!

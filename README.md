@@ -43,7 +43,7 @@ As dōmo – jsCarton works in both Worlds:
 ### node.js
 In the commandline:
 
-    npm install jsCarton
+    npm install [path to jsCarton] // Not on the npm server yet 
 
 In your file:
     carton = require( 'carton' )

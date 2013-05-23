@@ -153,7 +153,7 @@ key-attributes to control jsCarton:
   By default all jsCarton "tags" will be added as an div-layer to the DOM.
   With nodeName you can define another HTML-markup-element:
 
-        STRETCH( { nodeType: 'p' }, ... )
+        STRETCH( { nodeName: 'p' }, ... )
 
 * **align:**
   ( left, center, right ) Adds the alignment-types from cssCarton to the DOM-element.

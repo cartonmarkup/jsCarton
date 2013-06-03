@@ -238,7 +238,7 @@ styling:
 
       STICKER([ 15, 15, { fontSize: 32 } ], [ 5, 5, { fontSize: 16 } ], ... )
 
-## update
+## Update
 Sometimes it is necessary to update the settings of an DOM-element later, after the first parsing process. Sure you could
 manipulate it with something like jQuery to apply your changes but this isn't necessary. You can always use the update method 
 to change properties for a node managed by jsCarton without polluting the DOM with style attributes:
@@ -286,13 +286,12 @@ Also you can use an object to iterate over:
       })
     )
 
-
 ## Native dōmo
 If you wanna use an dōmo-markup-element without adding it to the factory you can add an 
 underscore to the function call: 
-      
+
     STRONG_( 'Some strong text!' )
-    
+
 jsCarton also hands over dōmos **ELEMENT, FRAGMENT, TEXT, COMMENT** and **STYLE.on** methods as
 seen for the FRAGMENT in the EACH example.
       

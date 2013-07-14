@@ -64,7 +64,7 @@ example, it's part of the dōmo way and not important for now. If you are intere
 [http://domo-js.com/](http://domo-js.com/) jsCarton does it exactly the same like dōmo does.
 
 ### Settings for cartonFactory
-A mayor part of jsCarton is it's [factory](http://github.com/cartonmarkup/cartonfactory/readme.md).
+A mayor part of jsCarton is it's [factory](http://github.com/cartonmarkup/cartonfactory).
 As said before it does all the CSS-magic for you. If you pass an extra object to the initial call 
 of the carton you can influence some of it's behaviour.
 

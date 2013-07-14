@@ -46,6 +46,7 @@ In the commandline:
     npm install [path to jsCarton] // Not on the npm server yet 
 
 In your file:
+    
     carton = require( 'carton' )
 
 ## Setup jsCarton

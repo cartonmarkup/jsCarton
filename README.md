@@ -5,7 +5,7 @@ Which I like allot, because it made me start thinking about a whole new way usin
 our daily work with HTML/CSS templating. The big deal about cssCarton is that it doesn't base on a 
 column/gutter system like most other css-frameworks do, instead cssCarton offers a bunch of default
 css-classes that provides an DOM-Element with a special default behavior. If you don't know the
-cssCarton yet, you should follow this [link](http://github.com/cartonmarkup/cssCarton/readme.md) before
+cssCarton yet, you should follow this [link](http://github.com/cartonmarkup/cssCarton/) before
 moving on. Anyway what jsCarton does, is to extend the already great dōmo markup with some extra cssCarton
 specific extra "tags". I think an example will help to understand best:
 

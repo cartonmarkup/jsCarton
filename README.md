@@ -1,7 +1,7 @@
 # jsCarton
 This is a mutation of Jed Schmidts JavaScript based markup language [dōmo](http://domo-js.com/).
 Which I like allot, because it made me start thinking about a whole new way using
-[cssCarton](http://css.carton.io/) an css-pattern Tobias Schlömer and I have figured out to improve 
+cssCarton an css-pattern Tobias Schlömer and I have figured out to improve 
 our daily work with HTML/CSS templating. The big deal about cssCarton is that it doesn't base on a 
 column/gutter system like most other css-frameworks do, instead cssCarton offers a bunch of default
 css-classes that provides an DOM-Element with a special default behavior. If you don't know the
